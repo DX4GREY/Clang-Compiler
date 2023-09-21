@@ -52,4 +52,3 @@ ClangC supports both Android and GNU/Linux platforms, automatically adjusting fi
 If you encounter any issues or have suggestions for improvements, please don't hesitate to open an issue or submit a pull request. Your feedback is valuable in enhancing ClangC's functionality.
 
 **Note:** Before using ClangC in a production environment, it's recommended to review and customize the script to meet your specific requirements.
-``
