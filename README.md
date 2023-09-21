@@ -28,7 +28,7 @@ If your code compiles successfully, ClangC will execute it, allowing you to prov
 Install ClangC as a command-line tool for easy access:
 
 ```bash
-bash clangc.sh-i
+bash clangc.sh -i
 ```
 
 This command makes ClangC available as a system-wide command, so you can use it conveniently from any location in your terminal.
