@@ -36,9 +36,6 @@ title() {
 }
 
 installScript(){
-    pkg="clang"
-    checkPackage
-    
     filename="$0"
     linux="0"
     case $(uname -o) in
@@ -96,6 +93,8 @@ helpRun() {
 
 
 title
+echo -e "${green_color}[*]${reset_color} Checking clang package..."
+pkg="clang" && checkPackage
 if [ "$#" == "0" ]; then
     helpRun
 else
@@ -110,8 +109,6 @@ else
             helpRun
         ;;
         *)  
-            echo -e "${green_color}[*]${reset_color} Checking clang package..."
-            pkg="clang" && checkPackage
             if test -e $1; then
                 echo -e "${green_color}[*]${reset_color} Checking out exist...${reset_color}"
                 mkdir -p $HOME/.out
