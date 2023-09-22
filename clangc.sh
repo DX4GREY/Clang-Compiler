@@ -10,16 +10,35 @@ reset_color="\033[0m"
 red_color="\033[31m"
 green_color="\033[32m"
 
-title() {
-    echo "  ___  _                       ___ "
-    echo " / (_)| |                     / (_)"
-    echo "|     | |  __,   _  _    __, |     "
-    echo "|     |/  /  |  / |/ |  /  | |     "
-    echo " \___/|__/\_/|_/  |  |_/\_/|/ \___/"
-    echo "                          /|by Dx4 "
-    echo "                          \|WHITE  "
+checkPackage() {
+    if [ ! -x "$(command -v $pkg)" ]; then
+        echo -e "${red_color}[*]${reset_color} $pkg not installed. Please install.."
+        if [ "$(uname -o)" == "Android" ]; then
+            echo -e "   pkg install $pkg"
+        else
+            echo -e "   sudo apt-get install $pkg"
+        fi
+        exit 1
+    else
+        echo -e "${green_color}[*]${reset_color} $pkg installed, Continues..."
+    fi
 }
+
+title() {
+    echo -e "${red_color}  ___  _                       ___ "
+    echo -e " / (_)| |                     / (_)"
+    echo -e "|     | |  __,   _  _    __, |     "
+    echo -e "|     |/  /  |  / |/ |  /  | |     "
+    echo -e "${reset_color} \___/|__/\_/|_/  |  |_/\_/|/ \___/"
+    echo -e "                          /|by ${green_color}Dx4 ${reset_color}"
+    echo -e "                          \|WHITE  "
+    echo
+}
+
 installScript(){
+    pkg="clang"
+    checkPackage
+    
     filename="$0"
     linux="0"
     case $(uname -o) in
@@ -71,8 +90,8 @@ helpRun() {
     echo "   or: clangc -u [for uninstall]"
     echo ""
     echo "Options:"
-    echo "    -h    : For show help option"
-    echo "    -u    : Uninstall this project"
+    echo "  -h     For show help option"
+    echo "  -u     Uninstall this project"
 }
 
 
@@ -90,7 +109,9 @@ else
         "-h") 
             helpRun
         ;;
-        *)
+        *)  
+            echo -e "${green_color}[*]${reset_color} Checking clang package..."
+            pkg="clang" && checkPackage
             if test -e $1; then
                 echo -e "${green_color}[*]${reset_color} Checking out exist...${reset_color}"
                 mkdir -p $HOME/.out
