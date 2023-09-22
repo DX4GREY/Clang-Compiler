@@ -10,11 +10,87 @@ reset_color="\033[0m"
 red_color="\033[31m"
 green_color="\033[32m"
 
+title() {
+    echo "  ___  _                       ___ "
+    echo " / (_)| |                     / (_)"
+    echo "|     | |  __,   _  _    __, |     "
+    echo "|     |/  /  |  / |/ |  /  | |     "
+    echo " \___/|__/\_/|_/  |  |_/\_/|/ \___/"
+    echo "                          /|by Dx4 "
+    echo "                          \|WHITE  "
+}
+installScript(){
+    filename="$0"
+    linux="0"
+    case $(uname -o) in
+        "Android")
+            cp -f $(pwd)/$filename $PREFIX/bin/clangc
+            chmod 777 $PREFIX/bin/clangc
+            linux="0"
+        ;;
+        "GNU/Linux")
+            sudo cp -f $(pwd)/$filename /usr/local/bin/clangc
+            sudo chmod +x /usr/local/bin/clangc
+            linux="1"
+        ;;
+        *)
+            echo "[*] Unsupported platform"
+            linux="0"
+        ;;
+    esac
+    if [ "$linux" == "1" ]; then
+        if [ "/usr/local/bin/clangc" != "-i" ]; then
+            echo -e "${green_color}[*]${reset_color} Install success"
+        else
+            echo -e "${red_color}[*]${reset_color} Install failed"
+        fi
+    else
+        if [ "$PREFIX/bin/clangc" != "-i" ]; then
+            echo -e "${green_color}[*]${reset_color} Install success"
+        else
+            echo -e "${red_color}[*]${reset_color} Install failed"
+        fi
+    fi
+}
+uninstallScript() {
+    case $(uname -o) in
+        "Android")
+            rm -rf $PREFIX/bin/clangc
+        ;;
+        "GNU/Linux")
+            sudo rm -rf /usr/local/bin/clangc
+        ;;
+        *)
+            echo "[*] Unsupported platform"
+        ;;
+    esac
+    echo -e "${green_color}[*]${reset_color} Uninstall success"
+}
+helpRun() {
+    echo "usage: clangc [file]"
+    echo "   or: clangc -u [for uninstall]"
+    echo ""
+    echo "Options:"
+    echo "    -h    : For show help option"
+    echo "    -u    : Uninstall this project"
+}
+
+
+title
 if [ "$#" == "0" ]; then
-    echo -e "${red_color}[*]${reset_color} No argument?${reset_color}"
+    helpRun
 else
-    if [ "$1" != "-u" ]; then
-        if [ "$1" != "-i" ]; then
+    case $1 in
+        "-i")
+            installScript
+        ;;
+        "-u")
+            uninstallScript
+        ;;
+        "-h") 
+            helpRun
+        ;;
+        *)
             if test -e $1; then
                 echo -e "${green_color}[*]${reset_color} Checking out exist...${reset_color}"
                 mkdir -p $HOME/.out
@@ -40,56 +116,12 @@ else
                 clear
                 ./$random_combination $2 $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15
                 if [ $? -eq 0 ]; then
+                    rm -rf $HOME/.out
                     cd $current
                 fi
             else
                 echo -e "${red_color}[*]${reset_color} File does not exist.${reset_color}"
             fi
-        else
-            filename="$0"
-            linux="0"
-            case $(uname -o) in
-                "Android")
-                    cp -f $(pwd)/$filename $PREFIX/bin/clangc
-                    chmod 777 $PREFIX/bin/clangc
-                    linux="0"
-                ;;
-                "GNU/Linux")
-                    sudo cp -f $(pwd)/$filename /usr/local/bin/clangc
-                    sudo chmod +x /usr/local/bin/clangc
-                    linux="1"
-                ;;
-                *)
-                    echo "[*] Unsupported platform"
-                    linux="0"
-                ;;
-            esac
-            if [ "$linux" == "1" ]; then
-                if [ "/usr/local/bin/clangc" != "-i" ]; then
-                    echo -e "${green_color}[*]${reset_color} Install success"
-                else
-                    echo -e "${red_color}[*]${reset_color} Install failed"
-                fi
-            else
-                if [ "$PREFIX/bin/clangc" != "-i" ]; then
-                    echo -e "${green_color}[*]${reset_color} Install success"
-                else
-                    echo -e "${red_color}[*]${reset_color} Install failed"
-                fi
-            fi
-        fi
-    else
-        case $(uname -o) in
-            "Android")
-                rm -rf $PREFIX/bin/clangc
-            ;;
-            "GNU/Linux")
-                sudo rm -rf /usr/local/bin/clangc
-            ;;
-            *)
-                echo "[*] Unsupported platform"
-            ;;
-        esac
-        echo -e "${green_color}[*]${reset_color} Uninstall success" 
-    fi
+        ;;
+    esac
 fi
