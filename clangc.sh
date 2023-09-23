@@ -115,12 +115,14 @@ else
                 echo -e "${green_color}[*]${reset_color} Start compile clang...${reset_color}"
                 response=$(clang -o "$HOME/.out/$random_combination" "$1" 2>&1)
                 if [ -n "$response" ]; then 
+                    echo
                     echo -e "$response"
-                fi
-                if [[ $response == *"error"* ]]; then
-                    rm -rf $HOME/.out
-                    echo -e "${red_color}[*]${reset_color} Compilation failed with errors."
-                    exit 1
+                    echo
+                    if [[ $response == *"error"* ]]; then
+                        rm -rf $HOME/.out
+                        echo -e "${red_color}[*]${reset_color} Compilation failed with errors, Please fix to run..."
+                        exit 1
+                    fi
                 fi
                 echo -e "${green_color}[*]${reset_color} Change root permission...${reset_color}"
                 if [ "$(uname -o)" == "Android" ]; then
