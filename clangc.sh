@@ -31,7 +31,7 @@ title() {
     echo -e "|     |/  /  |  / |/ |  /  | |     "
     echo -e "${reset_color} \___/|__/\_/|_/  |  |_/\_/|/ \___/"
     echo -e "                          /|by ${green_color}Dx4 ${reset_color}"
-    echo -e "                          \|WHITE  "
+    echo -e "                          \|v1.1  "
     echo
 }
 
