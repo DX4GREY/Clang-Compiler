@@ -11,6 +11,7 @@ red_color="\033[31m"
 green_color="\033[32m"
 
 checkPackage() {
+    echo -e "${green_color}[*]${reset_color} Checking clang package..."
     if [ ! -x "$(command -v $pkg)" ]; then
         echo -e "${red_color}[*]${reset_color} $pkg not installed. Please install.."
         if [ "$(uname -o)" == "Android" ]; then
@@ -93,13 +94,13 @@ helpRun() {
 
 
 title
-echo -e "${green_color}[*]${reset_color} Checking clang package..."
-pkg="clang" && checkPackage
+
 if [ "$#" == "0" ]; then
     helpRun
 else
     case $1 in
         "-i")
+            pkg="clang" && checkPackage
             installScript
         ;;
         "-u")
@@ -109,11 +110,19 @@ else
             helpRun
         ;;
         *)  
+            pkg="clang" && checkPackage
+            echo -e "${green_color}[*]${reset_color} Checking configuration..."
+            if test -e "~/.config/clangc.txt"; then
+                configuration=$(cat ~/.config/clangc.txt)
+            else
+                echo -e "${red_color}[*]${reset_color} No configuration file..."
+                echo -e "${green_color}[*]${reset_color} Continues without configuration file..."
+            fi
             if test -e $1; then
                 echo -e "${green_color}[*]${reset_color} Checking out exist...${reset_color}"
                 mkdir -p $HOME/.out
                 echo -e "${green_color}[*]${reset_color} Start compile clang...${reset_color}"
-                response=$(clang -o "$HOME/.out/$random_combination" "$1" 2>&1)
+                response=$(clang -o "$HOME/.out/$random_combination" "$1" $configuration 2>&1)
                 if [ -n "$response" ]; then 
                     echo
                     echo -e "$response"
@@ -132,8 +141,12 @@ else
                 fi
                 cd $HOME/.out
                 echo -e "${green_color}[*]${reset_color} Running...${reset_color}"
+                echo -e "${green_color}[*]${reset_color} Running Success${reset_color}"
                 sleep 1
-                clear
+                echo
+                echo -e "${green_color}[*]${reset_color} OutPut:"
+                echo
+
                 ./$random_combination $2 $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15
                 if [ $? -eq 0 ]; then
                     rm -rf $HOME/.out
