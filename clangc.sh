@@ -26,14 +26,15 @@ checkPackage() {
 }
 
 title() {
-    echo -e "${red_color}  ___  _                       ___ "
-    echo -e " / (_)| |                     / (_)"
-    echo -e "|     | |  __,   _  _    __, |     "
-    echo -e "|     |/  /  |  / |/ |  /  | |     "
-    echo -e "${reset_color} \___/|__/\_/|_/  |  |_/\_/|/ \___/"
-    echo -e "                          /|by ${green_color}Dx4 ${reset_color}"
-    echo -e "                          \|v1.1  "
-    echo
+	echo -e $red_color
+	echo "   (    (                        (    "
+	echo "   )\\   )\\    )         (  (     )\\   "
+	echo " (((_) ((_)( /(   (     )\\))(  (((_)  "
+	echo " )\\___  _  )(_))  )\\ ) ((_))\\  )\\___  "
+	echo -e "((/ __|| |((_)_  _(_/(  (()(_)((/ __| $reset_color"
+	echo " | (__ | |/ _\` || ' \\))/ _\` |  | (__  "
+	echo "  \\___||_|\\__,_||_||_| \\__, |   \\___| "
+	echo "                       |___/           "
 }
 
 installScript(){
@@ -69,6 +70,30 @@ installScript(){
         fi
     fi
 }
+
+openConfigFile() {
+	echo -e "${green_color}[*]${reset_color} Opening clangc.txt... "
+	if [ -f ~/.config/clangc.txt ]; then
+		echo -e "${green_color}[*]${reset_color} Open using nano..."
+		if [ "$(uname -o)" == "Android" ]; then
+			nano ~/.config/clangc.txt
+		else
+			sudo nano ~/.config/clangc.txt
+		fi
+	else
+		echo -e "${red_color}[*]${reset_color} No file config"
+		echo -e "${green_color}[*]${reset_color} Generate config file..."
+		echo -e "${green_color}[*]${reset_color} Successfully generate config file"
+		if [ "$(uname -o)" == "Android" ]; then
+			echo "# example : -lcurl -lgzip" > ~/.config/clangc.txt
+			nano ~/.config/clangc.txt
+		else
+			sudo echo "# example : -lcurl -lgzip" > ~/.config/clangc.txt
+			sudo nano ~/.config/clangc.txt
+		fi
+	fi
+}
+
 uninstallScript() {
     case $(uname -o) in
         "Android")
@@ -88,6 +113,7 @@ helpRun() {
     echo "   or: clangc -u [for uninstall]"
     echo ""
     echo "Options:"
+    echo "  -c     Open config file"
     echo "  -h     For show help option"
     echo "  -u     Uninstall this project"
 }
@@ -109,11 +135,14 @@ else
         "-h") 
             helpRun
         ;;
+        "-c") 
+        	openConfigFile
+        ;;
         *)  
             pkg="clang" && checkPackage
             echo -e "${green_color}[*]${reset_color} Checking configuration..."
-            if test -e "~/.config/clangc.txt"; then
-                configuration=$(cat ~/.config/clangc.txt)
+            if [ -f ~/.config/clangc.txt ]; then
+                configuration="$(cat ~/.config/clangc.txt)"
             else
                 echo -e "${red_color}[*]${reset_color} No configuration file..."
                 echo -e "${green_color}[*]${reset_color} Continues without configuration file..."
