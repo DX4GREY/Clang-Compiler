@@ -35,6 +35,7 @@ title() {
 	echo -e " | (__ | |/ _\` || ' \\))/ _\` |  | (__  "
 	echo -e "  \\___||_|\\__,_||_||_| \\__, |   \\___| "
 	echo -e "                       |___/ V1.0 ${red_color}Dx${green_color}4${reset_color}"
+	echo
 }
 
 installScript(){
@@ -109,9 +110,9 @@ uninstallScript() {
     echo -e "${green_color}[*]${reset_color} Uninstall success"
 }
 helpRun() {
-    echo "usage: clangc [file]"
-    echo "   or: clangc [file] --save"
-    echo "   or: clangc -u [for uninstall]"
+    echo "usage: $(basename $0) [file]"
+    echo "   or: $(basename $0) [file] --save"
+    echo "   or: $(basename $0) -u [for uninstall]"
     echo ""
     echo "Options:"
     echo "  -c     Open config file"
