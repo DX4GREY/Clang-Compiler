@@ -26,15 +26,15 @@ checkPackage() {
 }
 
 title() {
-	echo -e $red_color
-	echo "   (    (                        (    "
-	echo "   )\\   )\\    )         (  (     )\\   "
-	echo " (((_) ((_)( /(   (     )\\))(  (((_)  "
-	echo " )\\___  _  )(_))  )\\ ) ((_))\\  )\\___  "
-	echo -e "((/ __|| |((_)_  _(_/(  (()(_)((/ __| $reset_color"
-	echo " | (__ | |/ _\` || ' \\))/ _\` |  | (__  "
-	echo "  \\___||_|\\__,_||_||_| \\__, |   \\___| "
-	echo "                       |___/           "
+	echo -e ${red_color}
+	echo -e "   (    (                        (    "
+	echo -e "   )\\   )\\    )         (  (     )\\   "
+	echo -e " (((_) ((_)( /(   (     )\\))(  (((_)  "
+	echo -e " ) ${reset_color}___${red_color}\ ${reset_color}_${red_color}  )(_))  )\\ ) ((_))\\  ) ${reset_color}___  ${red_color}"
+	echo -e "((${reset_color}/ __|| |${red_color}((${reset_color}_${red_color})${reset_color}_  _${red_color}(${reset_color}_${red_color}/(  (()(_)(($reset_color/ __| $reset_color"
+	echo -e " | (__ | |/ _\` || ' \\))/ _\` |  | (__  "
+	echo -e "  \\___||_|\\__,_||_||_| \\__, |   \\___| "
+	echo -e "                       |___/ V1.0 ${red_color}Dx${green_color}4${reset_color}"
 }
 
 installScript(){
@@ -110,14 +110,35 @@ uninstallScript() {
 }
 helpRun() {
     echo "usage: clangc [file]"
+    echo "   or: clangc [file] --save"
     echo "   or: clangc -u [for uninstall]"
     echo ""
     echo "Options:"
     echo "  -c     Open config file"
     echo "  -h     For show help option"
     echo "  -u     Uninstall this project"
+    echo
+    echo " --save  to save compiled script"
 }
 
+saveToDir(){
+    if [ -f $1 ]; then
+        if [ "$(uname -o)" == "Android" ]; then
+            mkdir -p $2
+            cp -f $1 $2/$3
+        else 
+            sudo mkdir -p $2
+            sudo cp -f $1 $2/$3
+        fi
+        if [ -f $2/$3 ]; then
+            echo -e "${green_color}[*]${reset_color} Saved in : $2/$3"
+        else
+            echo -e "${red_color}[*]${reset_color} Save failed.."
+        fi
+    else
+        echo -e "${red_color}[*]${reset_color} No out file.."
+    fi
+}
 
 title
 
@@ -152,6 +173,7 @@ else
                 mkdir -p $HOME/.out
                 echo -e "${green_color}[*]${reset_color} Start compile clang...${reset_color}"
                 response=$(clang -o "$HOME/.out/$random_combination" "$1" $configuration 2>&1)
+
                 if [ -n "$response" ]; then 
                     echo
                     echo -e "$response"
@@ -163,11 +185,22 @@ else
                     fi
                 fi
                 echo -e "${green_color}[*]${reset_color} Change root permission...${reset_color}"
+                echo -e "${green_color}[*]${reset_color} Check save parameter...${reset_color}"
+                saveMessage="${green_color}[*]${reset_color} Saving project : $1...${reset_color}"
+
+                echo
+
                 if [ "$(uname -o)" == "Android" ]; then
                     chmod 777 $HOME/.out/$random_combination
                 else
                     chmod +x $HOME/.out/$random_combination
                 fi
+
+                if [ "$2" == "--save" ]; then
+                    echo -e $saveMessage
+                    saveToDir $HOME/.out/$random_combination $(pwd)/build $(basename "$1" | cut -d. -f1)
+                fi
+                echo 
                 cd $HOME/.out
                 echo -e "${green_color}[*]${reset_color} Running...${reset_color}"
                 echo -e "${green_color}[*]${reset_color} Running Success${reset_color}"
@@ -176,7 +209,12 @@ else
                 echo -e "${green_color}[*]${reset_color} OutPut:"
                 echo
 
-                ./$random_combination $2 $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15
+                if [ "$2" == "--save" ]; then
+                    ./$random_combination $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 $16
+                else
+                    ./$random_combination $2 $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15
+                fi
+
                 if [ $? -eq 0 ]; then
                     rm -rf $HOME/.out
                     cd $current
