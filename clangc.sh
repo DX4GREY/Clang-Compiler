@@ -30,7 +30,7 @@ title() {
 	echo -e "   (    (                        (    "
 	echo -e "   )\\   )\\    )         (  (     )\\   "
 	echo -e " (((_) ((_)( /(   (     )\\))(  (((_)  "
-	echo -e " ) ${reset_color}___${red_color}\ ${reset_color}_${red_color}  )(_))  )\\ ) ((_))\\  ) ${reset_color}___  ${red_color}"
+	echo -e " ) ${reset_color}___${red_color}\ ${reset_color}_${red_color}  )(_))  )\\ ) ((_))\\  ) ${reset_color}_${red_color})${reset_color}_  ${red_color}"
 	echo -e "((${reset_color}/ __|| |${red_color}((${reset_color}_${red_color})${reset_color}_  _${red_color}(${reset_color}_${red_color}/(  (()(_)(($reset_color/ __| $reset_color"
 	echo -e " | (__ | |/ _\` || ' \\))/ _\` |  | (__  "
 	echo -e "  \\___||_|\\__,_||_||_| \\__, |   \\___| "
@@ -206,7 +206,9 @@ else
                 echo -e "${green_color}[*]${reset_color} Running...${reset_color}"
                 echo -e "${green_color}[*]${reset_color} Running Success${reset_color}"
                 sleep 1
-                clear
+                if [[ $response != *"warning"* ]]; then
+                    clear
+                fi
                 echo -e "${green_color}[*]${reset_color} OutPut:"
                 echo
 
