@@ -188,9 +188,7 @@ else
                 echo -e "${green_color}[*]${reset_color} Change root permission...${reset_color}"
                 echo -e "${green_color}[*]${reset_color} Check save parameter...${reset_color}"
                 saveMessage="${green_color}[*]${reset_color} Saving project : $1...${reset_color}"
-
-                echo
-
+                
                 if [ "$(uname -o)" == "Android" ]; then
                     chmod 777 $HOME/.out/$random_combination
                 else
@@ -198,15 +196,17 @@ else
                 fi
 
                 if [ "$2" == "--save" ]; then
+                	echo
                     echo -e $saveMessage
                     saveToDir $HOME/.out/$random_combination $(pwd)/build $(basename "$1" | cut -d. -f1)
+                    echo
                 fi
-                echo 
+                
                 cd $HOME/.out
                 echo -e "${green_color}[*]${reset_color} Running...${reset_color}"
                 echo -e "${green_color}[*]${reset_color} Running Success${reset_color}"
                 sleep 1
-                echo
+                clear
                 echo -e "${green_color}[*]${reset_color} OutPut:"
                 echo
 
