@@ -32,7 +32,7 @@ bash clangc.sh -i
 ```
 Or one line installation
 ```bash
-curl -sSL https://raw.githubusercontent.com/DX4GREY/clangc/main/clangc.sh -o clangc.sh && chmod +x clangc.sh && bash clangc.sh -i && rm clangc.sh
+curl -sSL https://raw.githubusercontent.com/DX4GREY/Clang-Compiler/main/clangc.sh -o clangc.sh && chmod +x clangc.sh && bash clangc.sh -i && rm clangc.sh
 ```
 
 This command makes ClangC available as a system-wide command, so you can use it conveniently from any location in your terminal.
